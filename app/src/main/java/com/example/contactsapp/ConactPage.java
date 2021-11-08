@@ -47,6 +47,7 @@ public class ConactPage extends AppCompatActivity implements View.OnClickListene
             intent.putExtra("name", etName.getText().toString().trim());
             intent.putExtra("number", etNumber.getText().toString().trim());
             intent.putExtra("web", etWebsite.getText().toString().trim());
+            intent.putExtra("location", etLocation.getText().toString().trim());
 
             if(view.getId() == R.id.ivHappy){
                  intent.putExtra("mood", "happy");

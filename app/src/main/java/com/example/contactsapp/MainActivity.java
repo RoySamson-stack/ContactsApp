@@ -5,16 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.media.midi.MidiDeviceService;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     Button btnCreate;
     ImageView ivEmoji, ivPhone, ivWeb, ivLocation;
     final int CREATE_CONTACT = 1;
+    String name = " ", number = " ", web = "", location = "", mood = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +47,22 @@ public class MainActivity extends AppCompatActivity {
         ivPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
+            startActivity(intent);
             }
         });
         ivWeb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + web));
+            startActivity(intent);
             }
         });
         ivLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+            Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse("geo:0, 0?q=" + location));
+            startActivity(intent);
             }
         });
 
@@ -71,7 +78,22 @@ public class MainActivity extends AppCompatActivity {
                 ivWeb.setVisibility(View.VISIBLE);
                 ivLocation.setVisibility(View.VISIBLE);
 
+                name = data.getStringExtra("name");
+                number = data.getStringExtra("number");
+                web = data.getStringExtra("web");
+                location = data.getStringExtra("location");
+                mood = data.getStringExtra("mood");
 
+                if(mood.equals("happy")){
+                    ivEmoji.setImageResource(R.drawable.happy);
+                }else if(mood.equals("sad")){
+                    ivEmoji.setImageResource(R.drawable.sad);
+                }else{
+                    ivEmoji.setImageResource(R.drawable.middle);
+                }
+            }
+            else{
+                Toast.makeText(this, "Np data passed through", Toast.LENGTH_SHORT).show();
             }
          }
     }
